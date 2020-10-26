@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const localPlayer = new Snake()
     board.subscribe(localPlayer)
+    //localPlayer.notifyInitialValues()
 
     localPlayer.subscribe(inputHandler)
     localPlayer.subscribe(board)
@@ -26,7 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
         board.drawBoard()
         board.drawSnake()
         board.drawFuit()
-        board.gameRefresh(fruit.genarateRandomFruit)
+        
+        board.gameRefresh()
+        board.hasSnakeTheSamePositionWichFruit()
 
     }, 150)
 })
