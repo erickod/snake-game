@@ -10,11 +10,21 @@ class Snake {
     direction = ['left', 'right', 'up','down'][Math.floor(Math.random() * 4)];
     score = 0;
     tail = [
-        { 
-            x:Math.floor(Math.random() * 20), 
-            y:Math.floor(Math.random() * 20),
-        },
+        { x:Math.floor(Math.random() * 20), y:Math.floor(Math.random() * 20) },
     ]
+    notifyInitialValues(){
+        const notificationSnakePosition = snakeNotification()
+        notificationSnakePosition.type = 'snakePosition'
+        
+        notificationSnakePosition.value = {
+            player: this.name, 
+            x:this.position.x, 
+            y:this.position.y,
+            tail: this.tail}
+
+        this.notifyAll(notificationSnakePosition)
+
+    }
 
     subscribe(subject){
         subject.attach(this)
@@ -30,7 +40,7 @@ class Snake {
     }
 
     gameRefreshHandler(notification){
-        //console.log(notification)
+        if(notification.type != 'gameRefresh') return
 
         // save head position
         this.position.x = this.tail[0].x
@@ -77,13 +87,12 @@ class Snake {
         const notificationSnakePosition = snakeNotification()
         notificationSnakePosition.type = 'snakePosition'
         
-        notificationSnakePosition.value = {
-            player: this.name, 
-            x:this.position.x, 
-            y:this.position.y,
-            tail: this.tail}
-
-        
+        notificationSnakePosition.value = { 
+            x: this.position.x, 
+            y: this.position.y,
+            tail: this.tail,
+            player: this.name,
+        }
 
         this.notifyAll(notificationSnakePosition)
     }
