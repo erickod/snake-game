@@ -28,11 +28,12 @@ class Board {
 
                 if(player.tail[0].x == fruit.x && player.tail[0].y == fruit.y){
                     //TODO: Notificar player para player fazer
-                    player.tail.unshift(fruit)
+                    player.tail.unshift({x:fruit.x, y:fruit.y})
 
                     let notification = boardNotification()
                     notification.type = "getNewFruit"
                     this.notifyAll(notification)
+                    delete this.fruits[fruit.id]
 
 
                     
