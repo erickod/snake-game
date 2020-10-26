@@ -1,18 +1,3 @@
-const inputNotification = (pressedKey) => {
-    const allowedInputs = {}
-    allowedInputs['ArrowLeft'] = 'left'
-    allowedInputs['ArrowUp'] = 'up'
-    allowedInputs['ArrowRight'] = 'right'
-    allowedInputs['ArrowDown'] = 'down'
-
-    return {
-        type:'input',
-        value: allowedInputs[pressedKey]
-    }
-}
-
-
-
 class InputHandler {
     observers = []
 
@@ -46,6 +31,19 @@ class InputHandler {
         for(let observer of this.observers){
             observer.update(notification)
         }
+    }
+}
+
+const inputNotification = (pressedKey) => {
+    const allowedInputs = {}
+    allowedInputs['ArrowLeft'] = 'left'
+    allowedInputs['ArrowUp'] = 'up'
+    allowedInputs['ArrowRight'] = 'right'
+    allowedInputs['ArrowDown'] = 'down'
+
+    return {
+        type:'input',
+        value: allowedInputs[pressedKey]
     }
 }
 
