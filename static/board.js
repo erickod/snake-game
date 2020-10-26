@@ -19,7 +19,6 @@ class Board {
     }
     
     hasSnakeTheSamePositionWichFruit(){
-
         for(let playerKey in this.players){
             const player = this.players[playerKey];
 
@@ -27,16 +26,16 @@ class Board {
                 const fruit = this.fruits[fruitKey]
 
                 if(player.tail[0].x == fruit.x && player.tail[0].y == fruit.y){
-                    //TODO: Notificar player para player fazer
                     player.tail.unshift({x:fruit.x, y:fruit.y})
 
                     let notification = boardNotification()
                     notification.type = "getNewFruit"
                     this.notifyAll(notification)
+
+                    notification.type = "deleteFruit"
+                    notification.value = fruit
+                    this.notifyAll(notification)
                     delete this.fruits[fruit.id]
-
-
-                    
                 }
             }
         }
@@ -55,13 +54,10 @@ class Board {
         }
     }
 
-    gameRefresh(getRandomFruitCallback){
-        // gameRefreshNotifiction
+    gameRefresh(){
         const notification = boardNotification()
         notification.type = 'gameRefresh'
         this.notifyAll(notification)
-
-        this.hasSnakeTheSamePositionWichFruit()
     }
 
     fruitHandler(notification){
