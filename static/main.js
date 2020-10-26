@@ -27,9 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
         board.drawBoard()
         board.drawSnake()
         board.drawFuit()
-        
         board.gameRefresh()
         board.hasSnakeTheSamePositionWichFruit()
 
-    }, 150)
+    }, board.velocity)
 })
