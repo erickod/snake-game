@@ -2,6 +2,7 @@ class Board {
     observers = []
     players = {}
     fruits = {}
+    velocity = 100
 
     constructor(){
         this.field = document.querySelector('[data-id="app"');
@@ -12,7 +13,7 @@ class Board {
         for(let playerKey in this.players){
             for(let i=0; i < this.players[playerKey].tail.length; i++){
                 const snakeNode = this.players[playerKey].tail[i];
-                this.ctx.fillStyle = 'blue';
+                this.ctx.fillStyle = i == 0 ? 'darkblue ': 'blue';
                 this.ctx.fillRect(snakeNode.x, snakeNode.y, 1,1)
             }
         }
@@ -30,6 +31,12 @@ class Board {
 
                     let notification = boardNotification()
                     notification.type = "getNewFruit"
+                    this.notifyAll(notification)
+
+                    //notify player score
+                    //TODO: send to server state
+                    notification.type = "playerUpdateScore"
+                    notification.value = {player:playerKey}
                     this.notifyAll(notification)
 
                     notification.type = "deleteFruit"
