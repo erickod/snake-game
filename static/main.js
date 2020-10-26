@@ -6,6 +6,12 @@ import { Snake } from './snake.js';
 document.addEventListener('DOMContentLoaded', () => {
     console.log('main.js loaded');
 
+    const socket = io();
+
+    socket.on('connect', () => {
+        console.log('connect')
+    }) 
+
     const inputHandler = new InputHandler()
     const board = new Board()
 

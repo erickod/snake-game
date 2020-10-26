@@ -1,29 +1,18 @@
 class Snake {
-    observers = []
+    constructor(name){
+        this.observers = []
 
-    name = 'player1'
-    position = {
-        x:null,
-        y:null
-    };
+        this.name = name
+        this.position = {
+            x:null,
+            y:null
+        };
 
-    direction = ['left', 'right', 'up','down'][Math.floor(Math.random() * 4)];
-    score = 0;
-    tail = [
-        { x:Math.floor(Math.random() * 20), y:Math.floor(Math.random() * 20) },
-    ]
-    notifyInitialValues(){
-        const notificationSnakePosition = snakeNotification()
-        notificationSnakePosition.type = 'snakePosition'
-        
-        notificationSnakePosition.value = {
-            player: this.name, 
-            x:this.position.x, 
-            y:this.position.y,
-            tail: this.tail}
-
-        this.notifyAll(notificationSnakePosition)
-
+        this.direction = ['left', 'right', 'up','down'][Math.floor(Math.random() * 4)];
+        this.score = 0;
+        this.tail = [
+            { x:Math.floor(Math.random() * 20), y:Math.floor(Math.random() * 20) },
+        ]
     }
 
     subscribe(subject){
