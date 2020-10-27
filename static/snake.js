@@ -15,27 +15,35 @@ class Snake {
         ]
     }
 
-    applyId(notification){
-        if(notification.type == 'playerId' && this.name === ''){
-            this.name = notification.value
-            const socket = notification.socket
-            this.registerUser(socket)
-        }
+    disconnect(socket){
+        window.addEventListener("beforeunload", function(e, context=this){
+            notification = snakeNotification()
+            notification.type = 'playerDesconnection'
+            notification.value = this.name
+            socket.emit(notification.type, notification)
+            context.notifyAll(notification)
+         }, false);
     }
 
-    registerUser(socket){
-        console.log('registerUser')
-        const notification = snakeNotification()
-        notification.type = 'registerPlayer'
-        notification.value = {
+    registerUser(notification){
+        if(notification.type != 'playerId' && this.name != '') return
+
+        this.name = notification.value
+        const socket = notification.socket
+        
+        const registerUserNotification = snakeNotification()
+        registerUserNotification.type = 'registerPlayer'
+        registerUserNotification.value = {
             player: this.name, 
             position: this.position,
             tail: this.tail,
             score: this.score
         }
-        
-        socket.emit(notification.type, notification)
-        this.notifyAll(notification)
+
+        socket.emit(registerUserNotification.type, registerUserNotification)
+        this.notifyAll(registerUserNotification)
+
+        this.disconnect(socket)
     }
 
     subscribe(subject){
@@ -47,7 +55,7 @@ class Snake {
     }
 
     update(notification){
-        this.applyId(notification)
+        this.registerUser(notification)
         this.inputHandler(notification)
         this.gameRefreshHandler(notification)
     }
@@ -101,9 +109,9 @@ class Snake {
         notificationSnakePosition.type = 'snakePosition'
         
         notificationSnakePosition.value = { 
-            position: this.position,
-            tail: this.tail,
-            player: this.name,
+            'position': this.position,
+            'tail': this.tail,
+            'player': this.name,
         }
 
         this.notifyAll(notificationSnakePosition)
@@ -138,9 +146,9 @@ class Snake {
 
 const snakeNotification = () => {
     return {
-        sender: 'Snake',
-        type:'',
-        value:''
+        'sender': 'Snake',
+        'type':'',
+        'value':''
     }
 }
 

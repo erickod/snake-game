@@ -1,16 +1,38 @@
+/*
+TODO: NetworkHandler inicia conexão; -
+TODO: Solicita estado remoto; -
+TODO: Se não houver frutas no estado, socita a criação de uma;
+TODO: Notifica PlayerID para registro de usuário;
+TODO: Solicita estado remoto;
+TODO: Notifica estado remoto;
+*/
+
+
 class NetworkHandler {
     observers = []
+    playerId = ''
 
     constructor(socket = io()){
         this.socket = socket
     }
 
-    notifyPlayerId(){
-        this.socket.on('connect', (context=this) => {
-            const notification = networkNotification()
-            notification.type = 'playerId'
+    notifyConnect(){
+        this.playerId()
+    }
+
+    notifyDisconnect(){
+        this.socket.on('playerDesconnection', (notification)=>{
+            this.notifyAll(notification)
+        })
+    }
+
+    getPlayerId(){
+        const notification = networkNotification()
+        notification.type = 'playerId'
+        notification.socket = this.socket
+
+        this.socket.on('connect', () => {
             notification.value = this.socket.id
-            notification.socket = this.socket
             this.notifyAll(notification)
         })
     }
@@ -20,19 +42,23 @@ class NetworkHandler {
             this.socket.emit(notification.type, notification)
         }
     }
+    getRemoteState(){
+        this.socket.emit('getState')
+        this.socket.on('responseGetState', (remoteState, )=>{
+            //console.log(remoteState)
+            remoteState.socket = this.socket
 
-    gameRefreshHandler(notification){
-        if(notification.type != 'gameRefresh') return
-        this.socket.emit('getState', ()=>{
-            this.socket.on('getState', (state)=>{
-                state.socket = this.socket
-                //console.log(state)
-                this.notifyAll(state)
-            })
+            //console.log(notification)
+            this.notifyAll(remoteState)
         })
     }
 
-    genarateRandomFruit(notification){
+    getRemoteStateOnBoardRefresh(notification={type:'gameRefresh'}){
+        if(notification.type != 'gameRefresh') return
+        this.getRemoteState()
+    }
+
+    genarateRandomFruit(notification={type:"getNewFruit"}){
         if(notification.type == "getNewFruit"){
             this.socket.emit('genarateRandomFruit', ()=>{
                 this.socket.on('genarateRandomFruit', (fruit) => {
@@ -63,10 +89,10 @@ class NetworkHandler {
 
     update(notification){
         this.snakePositionHandler(notification)
-        
         this.genarateRandomFruit(notification)
-        this.gameRefreshHandler(notification)
-        this.deleteFruit(notification)
+        this.getRemoteStateOnBoardRefresh(notification)
+        this.notifyDisconnect()
+        this.getRemoteState()
     }
 
     attach(observer){

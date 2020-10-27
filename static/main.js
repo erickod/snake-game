@@ -7,27 +7,23 @@ import { NetworkHandler } from './network.js'
 document.addEventListener('DOMContentLoaded', () => {
     console.log('main.js loaded');
 
-    const netHandler = new NetworkHandler()
     const inputHandler = new InputHandler()
+    const netHandler = new NetworkHandler()
     const localPlayer = new Snake()
     const board = new Board()
     window.board = board
-    //const fruit = new Fruit()
     
-    //board.subscribe(fruit)
-    //fruit.subscribe(board)
-    //fruit.genarateRandomFruit()
+    localPlayer.subscribe(inputHandler)
+    localPlayer.subscribe(netHandler)
+    localPlayer.subscribe(board)
+
+    board.subscribe(netHandler)
+    board.subscribe(localPlayer)
 
     netHandler.subscribe(localPlayer)
     netHandler.subscribe(board)
-    localPlayer.subscribe(netHandler)
-    localPlayer.subscribe(inputHandler)
-    localPlayer.subscribe(board)
-    board.subscribe(localPlayer)
-    board.subscribe(netHandler)
-
-    netHandler.notifyPlayerId()
-    board.notifyAll({type:"getNewFruit"})
+    netHandler.getRemoteState()
+    netHandler.getPlayerId()
     
     let count = 0
 
@@ -40,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         count ++
 
-        if(count == -5){
+        if(count == -15){
             clearInterval(boardRefresh)
         }
 
