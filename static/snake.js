@@ -1,6 +1,7 @@
 class Snake {
-    constructor(){
+    constructor(socket){
         this.observers = []
+        this.socket = socket
 
         this.name = ''
         this.position = {
@@ -15,12 +16,12 @@ class Snake {
         ]
     }
 
-    disconnect(socket){
+    disconnect(){
         window.addEventListener("beforeunload", function(e, context=this){
-            notification = snakeNotification()
+            const notification = snakeNotification()
             notification.type = 'playerDesconnection'
             notification.value = this.name
-            socket.emit(notification.type, notification)
+            this.socket.emit(notification.type, notification)
             context.notifyAll(notification)
          }, false);
     }
@@ -43,7 +44,7 @@ class Snake {
         socket.emit(registerUserNotification.type, registerUserNotification)
         this.notifyAll(registerUserNotification)
 
-        this.disconnect(socket)
+        this.disconnect()
     }
 
     subscribe(subject){
