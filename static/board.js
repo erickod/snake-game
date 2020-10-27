@@ -20,9 +20,9 @@ class Board {
             for(let i=0; i < this.players[playerKey].tail.length; i++){
                 const snakeNode = this.players[playerKey].tail[i];
                 if(this.localPlayer == playerKey){
-                    this.ctx.fillStyle = i == 0 ? 'darkblue ': 'blue';
+                    this.ctx.fillStyle = i == 0 ? 'rgba(0, 0, 139, 0.5) ': 'rgba(0, 0, 139, 0.3)';
                 }else {
-                    this.ctx.fillStyle = i == 0 ? 'black ': 'gray';
+                    this.ctx.fillStyle = i == 0 ? 'rgba(0, 0, 0, 0.3)': 'rgba(0, 0, 0, 0.1)';
                 }
                 this.ctx.fillRect(snakeNode.x, snakeNode.y, 1,1)
             }
