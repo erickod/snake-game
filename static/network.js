@@ -12,7 +12,7 @@ class NetworkHandler {
     observers = []
     playerId = ''
 
-    constructor(socket = io()){
+    constructor(socket){
         this.socket = socket
     }
 
