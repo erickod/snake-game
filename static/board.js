@@ -9,13 +9,26 @@ class Board {
         this.ctx = this.field.getContext('2d');
     }
 
+    markLocalPlayer(notification){
+        if(notification.type == 'playerId'){
+            this.localPlayer = notification.value
+        }
+    }
+
     drawSnake(){
         for(let playerKey in this.players){
+            
             for(let i=0; i < this.players[playerKey].tail.length; i++){
                 const snakeNode = this.players[playerKey].tail[i];
-                this.ctx.fillStyle = i == 0 ? 'darkblue ': 'blue';
+                if(this.localPlayer == playerKey){
+                    this.ctx.fillStyle = i == 0 ? 'darkblue ': 'blue';
+                }else {
+                    this.ctx.fillStyle = i == 0 ? 'black ': 'gray';
+                }
+                
                 this.ctx.fillRect(snakeNode.x, snakeNode.y, 1,1)
             }
+            
         }
     }
     
@@ -39,6 +52,7 @@ class Board {
                     notification.value = {player:playerKey}
                     this.notifyAll(notification)
 
+                    console.log(fruit)
                     notification.type = "deleteFruit"
                     notification.value = fruit
                     this.notifyAll(notification)
@@ -69,20 +83,37 @@ class Board {
 
     fruitHandler(notification){
         if(notification.type == 'fruitGeneration'){
-            //console.log(notification)
+            
+            console.log(notification)
             const fruit = notification.value
             this.fruits[fruit.id] = fruit
+
+            // for(let id in notification.value){
+            //     this.fruits[id] = notification.value[id]
+            // }
         }
+    }
+
+    remoteStateMerge(notification){
+        if(notification.type == 'state'){
+            for(let playerKey in notification.value.players){
+                let player = notification.value.players[playerKey]
+                player = Object.assign({}, this.players[playerKey], player)
+                this.players[playerKey] = player
+            }
+        }
+        
     }
 
     snakePositionHandler(notification){
         if(notification.type == 'snakePosition'){
             //console.log(notification)
             const player = notification.value.player
-            const playerX = notification.value.x
-            const playerY = notification.value.y
+            const playerX = notification.value.position.x
+            const playerY = notification.value.position.y
             const tail = notification.value.tail
-            this.players[player] = {x: playerX, y:playerY, tail:tail}
+            //this.players[player] = {x: playerX, y:playerY, tail:tail}
+            this.players[player] = {position: {x:playerX, y:playerY}, tail:tail}
         }
     }
 
@@ -114,8 +145,10 @@ class Board {
     }
 
     update(notification){
-        this.snakePositionHandler(notification)
         this.fruitHandler(notification)
+        this.markLocalPlayer(notification)
+        this.remoteStateMerge(notification)
+        this.snakePositionHandler(notification)
     }
 
 }

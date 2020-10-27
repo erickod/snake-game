@@ -21,21 +21,30 @@ async def connect(sid, environ):
     print(f'Client Connected: {sid}')
 
 
-@sio.on('addPlayer', namespace='/')
-async def add_player(sid, player):
-    print(f'Added player with id ${sid}')
-    state.addPlayer(player)
+@sio.on('registerPlayer', namespace='/')
+async def registerPlayer(sid, notification):
+    await state.registerPlayer(notification)
 
-@sio.on('movePlayer', namespace='/')
-async def add_player(sid, player):
-    print(f'Moving player id ${sid}')
-    state.mover(player)
+
+@sio.on('snakePosition', namespace='/')
+async def snakePositionHandler(sid, notification):
+    #print(f'Player id ${sid} has been moved')
+    await state.snakePositionHandler(notification)
 
 @sio.on('getState', namespace='/')
-async def get_state(sid, player):
-    print('sending state to the client id', sid)
-    result = await state.getState()
-    await sio.emit('getState', {'state': result})
+async def emitState(sid):
+    await sio.emit('getState', await state.getState())
+
+@sio.on('genarateRandomFruit', namespace='/')
+async def genarateRandomFruit(sid):
+    await sio.emit('genarateRandomFruit', await state.genarateRandomFruit())
+
+
+@sio.on('deleteFruit', namespace='/')
+async def genarateRandomFruit(sid, notification):
+    await sio.emit('genarateRandomFruit', await state.deleteFruit(notification))
+
+
 
 
 if __name__ == '__main__':

@@ -1,8 +1,8 @@
 class Snake {
-    constructor(name){
+    constructor(){
         this.observers = []
 
-        this.name = name
+        this.name = ''
         this.position = {
             x:null,
             y:null
@@ -15,6 +15,29 @@ class Snake {
         ]
     }
 
+    applyId(notification){
+        if(notification.type == 'playerId' && this.name === ''){
+            this.name = notification.value
+            const socket = notification.socket
+            this.registerUser(socket)
+        }
+    }
+
+    registerUser(socket){
+        console.log('registerUser')
+        const notification = snakeNotification()
+        notification.type = 'registerPlayer'
+        notification.value = {
+            player: this.name, 
+            position: this.position,
+            tail: this.tail,
+            score: this.score
+        }
+        
+        socket.emit(notification.type, notification)
+        this.notifyAll(notification)
+    }
+
     subscribe(subject){
         subject.attach(this)
     }
@@ -24,8 +47,9 @@ class Snake {
     }
 
     update(notification){
-       this.inputHandler(notification)
-       this.gameRefreshHandler(notification)
+        this.applyId(notification)
+        this.inputHandler(notification)
+        this.gameRefreshHandler(notification)
     }
 
     gameRefreshHandler(notification){
@@ -77,8 +101,7 @@ class Snake {
         notificationSnakePosition.type = 'snakePosition'
         
         notificationSnakePosition.value = { 
-            x: this.position.x, 
-            y: this.position.y,
+            position: this.position,
             tail: this.tail,
             player: this.name,
         }

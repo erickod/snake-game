@@ -2,32 +2,33 @@ import { Board } from './board.js';
 import { Fruit } from './fruit.js';
 import { InputHandler } from './input.js'
 import { Snake } from './snake.js';
+import { NetworkHandler } from './network.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     console.log('main.js loaded');
 
-    const socket = io();
-
-    socket.on('connect', () => {
-        console.log('connect')
-    }) 
-
+    const netHandler = new NetworkHandler()
     const inputHandler = new InputHandler()
-    const board = new Board()
-
-    const fruit = new Fruit()
-    board.subscribe(fruit)
-    fruit.subscribe(board)
-
-    fruit.genarateRandomFruit()
-
     const localPlayer = new Snake()
-    board.subscribe(localPlayer)
-    //localPlayer.notifyInitialValues()
+    const board = new Board()
+    //const fruit = new Fruit()
+    
+    //board.subscribe(fruit)
+    //fruit.subscribe(board)
+    //fruit.genarateRandomFruit()
 
+    netHandler.subscribe(localPlayer)
+    netHandler.subscribe(board)
+    localPlayer.subscribe(netHandler)
     localPlayer.subscribe(inputHandler)
     localPlayer.subscribe(board)
+    board.subscribe(localPlayer)
+    board.subscribe(netHandler)
+
+    netHandler.notifyPlayerId()
+    board.notifyAll({type:"getNewFruit"})
     
+    let count = 0
 
     let boardRefresh = setInterval(() => {
         board.drawBoard()
@@ -35,6 +36,12 @@ document.addEventListener('DOMContentLoaded', () => {
         board.drawFuit()
         board.gameRefresh()
         board.hasSnakeTheSamePositionWichFruit()
+        count ++
+
+        if(count == -100){
+            clearInterval(boardRefresh)
+        }
+
 
     }, board.velocity)
 })
