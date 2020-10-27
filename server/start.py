@@ -58,7 +58,7 @@ async def snakePositionHandler(sid, notification):
             state['players'][player_key] = {**state['players'][player_key], **player_object}
             await verifyPlayerFruitColision(sid)
         else:
-            await registerPlayer(notification)
+            await registerPlayer(sid, notification)
 
 @sio.on('genarateRandomFruit', namespace='/')
 async def genarateRandomFruit(sid):
@@ -87,6 +87,7 @@ async def verifyPlayerFruitColision(sid):
                 else:
                     player['score'] += 1
                 await deleteFruit(sid, {'id':fruit_id})
+                await genarateRandomFruit(sid)
                 break
 
 @sio.on('getState', namespace='/')
