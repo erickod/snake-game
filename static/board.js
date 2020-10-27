@@ -39,11 +39,6 @@ class Board {
 
                 if(player.tail[0].x == fruit.x && player.tail[0].y == fruit.y){
                     player.tail.unshift({x:fruit.x, y:fruit.y})
-
-                    let notification = boardNotification()
-                    notification.type = "getNewFruit"
-                    this.notifyAll(notification)
-                    delete this.fruits[fruit.id]
                 }
             }
         }
@@ -57,7 +52,7 @@ class Board {
     drawFuit(){
         for(let fruitKey in this.fruits){
             const fruit = this.fruits[fruitKey]
-            this.ctx.fillStyle = 'red';
+            this.ctx.fillStyle = 'rgba(255,0,0,0.6)';
             this.ctx.fillRect(fruit.x, fruit.y, 1,1)
         }
     }
@@ -107,7 +102,6 @@ class Board {
             const playerX = notification.value.position.x
             const playerY = notification.value.position.y
             const tail = notification.value.tail
-            //this.players[player] = {x: playerX, y:playerY, tail:tail}
             this.players[player] = {position: {x:playerX, y:playerY}, tail:tail}
         }
     }
@@ -141,13 +135,12 @@ class Board {
 
     update(notification){
         if (notification.type == 'playerDesconnection'){
-            console.log(notification)
+            //console.log(notification)
         }
-        
+        this.getLocalPlayer(notification)
+        this.remoteStateMerge(notification)
         this.snakePositionHandler(notification)
         this.fruitHandler(notification)
-        this.remoteStateMerge(notification)
-        this.getLocalPlayer(notification)
         this.removeDisconnectedPlayers(notification)
     }
 }
