@@ -3,4 +3,5 @@
     width: 500px;
     height: 500px;
     image-rendering: crisp-edges;
+    image-rendering: pixelated;
 }
