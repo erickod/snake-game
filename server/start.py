@@ -31,14 +31,13 @@ async def snakePositionHandler(sid, notification):
     #print(f'Player id ${sid} has been moved')
     await state.snakePositionHandler(notification)
 
-@sio.on('getState', namespace='/')
-async def emitState(sid):
-    await sio.emit('getState', await state.getState())
-
-@sio.on('genarateRandomFruit', namespace='/')
+@sio.event
 async def genarateRandomFruit(sid):
     await sio.emit('genarateRandomFruit', await state.genarateRandomFruit())
 
+@sio.on('getState', namespace='/')
+async def emitState(sid):
+    await sio.emit('getState', await state.getState())
 
 @sio.on('deleteFruit', namespace='/')
 async def genarateRandomFruit(sid, notification):

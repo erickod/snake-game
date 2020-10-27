@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputHandler = new InputHandler()
     const localPlayer = new Snake()
     const board = new Board()
+    window.board = board
     //const fruit = new Fruit()
     
     //board.subscribe(fruit)
@@ -36,12 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
         board.drawFuit()
         board.gameRefresh()
         board.hasSnakeTheSamePositionWichFruit()
+
         count ++
 
-        if(count == -100){
+        if(count == -5){
             clearInterval(boardRefresh)
         }
-
 
     }, board.velocity)
 })

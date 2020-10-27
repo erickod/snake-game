@@ -96,6 +96,7 @@ class Board {
 
     remoteStateMerge(notification){
         if(notification.type == 'state'){
+            this.fruits = notification.value.fruits
             for(let playerKey in notification.value.players){
                 let player = notification.value.players[playerKey]
                 player = Object.assign({}, this.players[playerKey], player)

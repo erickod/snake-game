@@ -23,11 +23,11 @@ class NetworkHandler {
 
     gameRefreshHandler(notification){
         if(notification.type != 'gameRefresh') return
-        //console.log('gameRefreshHandler')
         this.socket.emit('getState', ()=>{
-            this.socket.on('getState', (s)=>{
-                s.socket = this.socket
-                this.notifyAll(s)
+            this.socket.on('getState', (state)=>{
+                state.socket = this.socket
+                //console.log(state)
+                this.notifyAll(state)
             })
         })
     }
@@ -48,7 +48,7 @@ class NetworkHandler {
     deleteFruit(notification){
         if(notification.type == "deleteFruit"){
             this.socket.emit('deleteFruit', notification.value)
-            
+
         }
     }
 
@@ -63,8 +63,9 @@ class NetworkHandler {
 
     update(notification){
         this.snakePositionHandler(notification)
-        this.gameRefreshHandler(notification)
+        
         this.genarateRandomFruit(notification)
+        this.gameRefreshHandler(notification)
         this.deleteFruit(notification)
     }
 
