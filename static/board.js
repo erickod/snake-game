@@ -20,9 +20,10 @@ class Board {
             for(let i=0; i < this.players[playerKey].tail.length; i++){
                 const snakeNode = this.players[playerKey].tail[i];
                 if(this.localPlayer == playerKey){
-                    this.ctx.fillStyle = i == 0 ? 'rgba(0, 0, 139, 0.5) ': 'rgba(0, 0, 139, 0.3)';
+                    const playerColor = this.players[playerKey].color
+                    this.ctx.fillStyle = i == 0 ? `rgba(${playerColor}, 0.5)`: `rgba(${playerColor}, 0.3)`;
                 }else {
-                    this.ctx.fillStyle = i == 0 ? 'rgba(0, 0, 0, 0.3)': 'rgba(0, 0, 0, 0.1)';
+                    this.ctx.fillStyle = i == 0 ? 'rgba(145, 175, 145, 0.5)': 'rgba(145, 175, 145, 0.3)';
                 }
                 this.ctx.fillRect(snakeNode.x, snakeNode.y, 1,1)
             }
@@ -102,7 +103,12 @@ class Board {
             const playerX = notification.value.position.x
             const playerY = notification.value.position.y
             const tail = notification.value.tail
-            this.players[player] = {position: {x:playerX, y:playerY}, tail:tail}
+            const color = notification.value.color
+            this.players[player] = {
+                position: {x:playerX, y:playerY}, 
+                tail:tail,
+                color:color
+            }
         }
     }
 
