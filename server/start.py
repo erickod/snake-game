@@ -10,6 +10,7 @@ sio = socketio.AsyncServer()
 app = web.Application()
 app.router.add_get('/', index)
 app.router.add_static('/static', 'static')
+app.router.add_static('/static/snake', 'static')
 sio.attach(app)
 
 state = {
