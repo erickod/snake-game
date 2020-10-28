@@ -8,6 +8,7 @@ class Snake {
         this.snakeDirectionStrategy = snakeDirectionStrategy
 
         this.name = ''
+        this.color = this.randomColor()
         this.position = {
             x:null,
             y:null
@@ -18,6 +19,14 @@ class Snake {
         this.tail = [
             { x:Math.floor(Math.random() * 20), y:Math.floor(Math.random() * 20) },
         ]
+    }
+
+    randomColor(){
+        const color1 = Math.floor(Math.random() * 144) 
+        const color2 = Math.floor(Math.random() * 144) 
+        const color3 = Math.floor(Math.random() * 144) 
+        
+        return `${color1}, ${color2}, ${color3}`
     }
 
     registerUser(notification){
@@ -31,6 +40,7 @@ class Snake {
         registerUserNotification.value = {
             player: this.name, 
             position: this.position,
+            color: this.color,
             tail: this.tail,
             score: this.score
         }
@@ -74,6 +84,7 @@ class Snake {
         notificationSnakePosition.value = { 
             'position': this.position,
             'tail': this.tail,
+            'color': this.color,
             'player': this.name,
         }
 
