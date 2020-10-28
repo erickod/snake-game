@@ -16,16 +16,6 @@ class Snake {
         ]
     }
 
-    disconnect(){
-        window.addEventListener("beforeunload", function(e, context=this){
-            const notification = snakeNotification()
-            notification.type = 'playerDesconnection'
-            notification.value = this.name
-            this.socket.emit(notification.type, notification)
-            context.notifyAll(notification)
-         }, false);
-    }
-
     registerUser(notification){
         if(notification.type != 'playerId' && this.name != '') return
 
@@ -43,8 +33,6 @@ class Snake {
 
         socket.emit(registerUserNotification.type, registerUserNotification)
         this.notifyAll(registerUserNotification)
-
-        this.disconnect()
     }
 
     subscribe(subject){
