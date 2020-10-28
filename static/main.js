@@ -1,7 +1,6 @@
 import { Board } from './board.js';
-import { Fruit } from './fruit.js';
 import { InputHandler } from './input.js'
-import { Snake } from './snake.js';
+import { Snake } from './snake/snake.js';
 import { NetworkHandler } from './network.js'
 
 document.addEventListener('DOMContentLoaded', () => {
