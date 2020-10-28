@@ -1,13 +1,3 @@
-/*
-TODO: NetworkHandler inicia conexão; -
-TODO: Solicita estado remoto; -
-TODO: Se não houver frutas no estado, socita a criação de uma;
-TODO: Notifica PlayerID para registro de usuário;
-TODO: Solicita estado remoto;
-TODO: Notifica estado remoto;
-*/
-
-
 class NetworkHandler {
     observers = []
     playerId = ''
