@@ -1,7 +1,11 @@
+import SnakeDirectionStrategy from './snakeDirectionStrategy.js';
+import snakeNotification from './snakeNotification.js'
+
 class Snake {
-    constructor(socket){
+    constructor(socket, snakeDirectionStrategy=SnakeDirectionStrategy){
         this.observers = []
         this.socket = socket
+        this.snakeDirectionStrategy = snakeDirectionStrategy
 
         this.name = ''
         this.position = {
@@ -56,42 +60,12 @@ class Snake {
         this.position.x = this.tail[0].x
         this.position.y = this.tail[0].y
 
-        // Update position
-        if(this.direction == 'left'){
-            if(this.position.x <= 0 ){
-                this.position.x = 19
-            }else {
-                this.position.x -= 1
-            }
-        }
-
-        if(this.direction == 'right'){
-            if(this.position.x >= 19 ){
-                this.position.x = 0
-            }else {
-                this.position.x += 1
-            }
-        }
-        
-        if(this.direction == 'up'){
-            if(this.position.y <= 0 ){
-                this.position.y = 19
-            }else {
-                this.position.y -= 1
-            }
-        }
-
-        if(this.direction == 'down'){
-            if(this.position.y >= 19 ){
-                this.position.y = 0
-            }else {
-                this.position.y += 1
-            }
-        }
+        let directionStrategy = new this.snakeDirectionStrategy(this.direction)
+        let updatedTail = directionStrategy.exec(this.position.x, this.position.y)
         
         //update snake tail  
         this.tail.pop()
-        this.tail.unshift({x:this.position.x, y:this.position.y})
+        this.tail.unshift(updatedTail)
 
         //notify position
         const notificationSnakePosition = snakeNotification()
@@ -130,14 +104,6 @@ class Snake {
         for(let observer of this.observers){
             observer.update(notification)
         }
-    }
-}
-
-const snakeNotification = () => {
-    return {
-        'sender': 'Snake',
-        'type':'',
-        'value':''
     }
 }
 
