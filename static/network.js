@@ -58,19 +58,6 @@ class NetworkHandler {
         this.getRemoteState()
     }
 
-    genarateRandomFruit(notification={type:"getNewFruit"}){
-        if(notification.type == "getNewFruit"){
-            this.socket.emit('genarateRandomFruit', ()=>{
-                this.socket.on('genarateRandomFruit', (fruit) => {
-                    notification = networkNotification()
-                    notification.type = 'fruitGeneration'
-                    notification.value = fruit
-                    this.notifyAll(notification)
-                })
-            })
-        }
-    }
-
     subscribe(subject){
         subject.attach(this)
     }
@@ -81,7 +68,6 @@ class NetworkHandler {
 
     update(notification){
         this.snakePositionHandler(notification)
-        this.genarateRandomFruit(notification)
         this.getRemoteStateOnBoardRefresh(notification)
         this.notifyDisconnect()
         this.getRemoteState()
