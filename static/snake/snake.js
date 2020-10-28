@@ -22,12 +22,26 @@ class Snake {
     }
 
     randomColor(){
-        const color1 = Math.floor(Math.random() * 144) 
-        const color2 = Math.floor(Math.random() * 144) 
-        const color3 = Math.floor(Math.random() * 144) 
+        const boardColor = ((144 * 299) + (238 * 587) + (144 * 114)) / 1000
+
+        let r
+        let g 
+        let b
         
-        return `${color1}, ${color2}, ${color3}`
+        while(true){
+            r = Math.floor(Math.random() * 255) 
+            g = Math.floor(Math.random() * 255) 
+            b = Math.floor(Math.random() * 255)
+
+            let playerColor = ((r * 299) + (g * 587) + (b * 114)) / 1000
+
+            if(boardColor - playerColor >= 125){
+                return `${r}, ${g}, ${b}`
+            }
+        }
     }
+
+    calcColorValue
 
     registerUser(notification){
         if(notification.type != 'playerId' && this.name != '') return

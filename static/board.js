@@ -23,7 +23,7 @@ class Board {
                     const playerColor = this.players[playerKey].color
                     this.ctx.fillStyle = i == 0 ? `rgba(${playerColor}, 0.5)`: `rgba(${playerColor}, 0.3)`;
                 }else {
-                    this.ctx.fillStyle = i == 0 ? 'rgba(145, 175, 145, 0.5)': 'rgba(145, 175, 145, 0.3)';
+                    this.ctx.fillStyle = i == 0 ? 'rgba(10, 10, 10, 0.3)': 'rgba(10, 10, 10, 0.1)';
                 }
                 this.ctx.fillRect(snakeNode.x, snakeNode.y, 1,1)
             }
