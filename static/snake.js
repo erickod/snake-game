@@ -46,10 +46,10 @@ class Snake {
     update(notification){
         this.registerUser(notification)
         this.inputHandler(notification)
-        this.gameRefreshHandler(notification)
+        this.updatePositionOnBordRefresh(notification)
     }
 
-    gameRefreshHandler(notification){
+    updatePositionOnBordRefresh(notification){
         if(notification.type != 'gameRefresh') return
 
         // save head position
