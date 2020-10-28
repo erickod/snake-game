@@ -71,14 +71,6 @@ class NetworkHandler {
         }
     }
 
-    deleteFruit(notification){
-        if(notification.type == "deleteFruit"){
-            this.socket.emit('deleteFruit', notification.value)
-
-        }
-    }
-
-
     subscribe(subject){
         subject.attach(this)
     }
