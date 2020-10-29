@@ -35,7 +35,12 @@ class Snake {
 
             let playerColor = ((r * 299) + (g * 587) + (b * 114)) / 1000
 
-            if(boardColor - playerColor >= 125){
+            if(
+                boardColor - playerColor >= 125 
+                && Boolean(g < 228 || g > 248)
+                && Boolean(r < 134 || r > 154)
+                && Boolean(b < 134 || b > 154)
+            ){
                 return `${r}, ${g}, ${b}`
             }
         }
