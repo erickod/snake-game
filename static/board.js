@@ -64,14 +64,6 @@ class Board {
         this.notifyAll(notification)
     }
 
-    fruitHandler(notification){
-        if(notification.type == 'fruitGeneration'){
-            console.log(notification)
-            const fruit = notification.value
-            this.fruits[fruit.id] = fruit
-        }
-    }
-
     remoteStateMerge(notification){
         if(notification.type == 'state'){
             //console.log(notification)
