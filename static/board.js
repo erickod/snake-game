@@ -64,6 +64,8 @@ class Board {
         this.notifyAll(notification)
     }
 
+
+
     remoteStateMerge(notification){
         if(notification.type == 'state'){
             //console.log(notification)
@@ -138,7 +140,7 @@ class Board {
         this.getLocalPlayer(notification)
         this.remoteStateMerge(notification)
         this.snakePositionHandler(notification)
-        this.fruitHandler(notification)
+        //this.fruitHandler(notification)
         this.removeDisconnectedPlayers(notification)
     }
 }
