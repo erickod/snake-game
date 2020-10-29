@@ -46,8 +46,6 @@ class Snake {
         }
     }
 
-    calcColorValue
-
     registerUser(notification){
         if(notification.type != 'playerId' && this.name != '') return
 
