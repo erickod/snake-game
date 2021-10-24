@@ -1,6 +1,84 @@
+html {
+    height: 100vh;
+    background-color: #0b1b2b;
+    color:#f3f3f3;
+}
+body {  
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.c-name-modal {
+    position: absolute;
+    top:0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #0B1B2B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.c-name-modal .fields .name, .c-name-modal .fields .play-button {
+    padding: 12px 10px;
+    border-radius: 8px;
+    width: 400px;
+    border: none;
+}
+.c-name-modal .fields .play-button {
+    width: 150px;
+    background-color: #D68A45;
+}
+.c-name-modal .fields .play-button:hover {
+    background-color: #D6dF99;
+    cursor: pointer;
+}
+
+.content {
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.container .c-timer-counter{
+    width: 100%;
+}
+.c-timer-counter .time {
+    text-align: center;
+    margin-right: 150px;
+}
+.content .board-container {
+    display: flex;
+    justify-content: center;
+}
+
 [data-id="app"]{
     border: 1px solid #cecece;
     width: 500px;
     height: 500px;
-    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+}
+
+.c-players-info{
+    width: 150px;
+}
+.c-players-info .player-data {
+    border: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border-left: none;
+}
+
+.c-players-info .player-data.local-player {
+    color: tomato;
+}
+
+.c-players-info .player-data .name, .c-players-info .player-data .score{
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

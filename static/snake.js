@@ -2,28 +2,18 @@ class Snake {
     observers = []
 
     name = 'player1'
-    position = {
-        x:null,
-        y:null
-    };
-
     direction = ['left', 'right', 'up','down'][Math.floor(Math.random() * 4)];
     score = 0;
-    tail = [
-        { x:Math.floor(Math.random() * 20), y:Math.floor(Math.random() * 20) },
-    ]
-    notifyInitialValues(){
-        const notificationSnakePosition = snakeNotification()
-        notificationSnakePosition.type = 'snakePosition'
-        
-        notificationSnakePosition.value = {
-            player: this.name, 
-            x:this.position.x, 
-            y:this.position.y,
-            tail: this.tail}
 
-        this.notifyAll(notificationSnakePosition)
-
+    constructor(networkHandler, name){
+        this.networkHandler = networkHandler
+        this.name = name
+        this.position = {}
+        this.position.x = null
+        this.position.y = null
+        this.tail = [
+            { x:null,  y:null },
+        ]
     }
 
     subscribe(subject){
@@ -35,12 +25,14 @@ class Snake {
     }
 
     update(notification){
-       this.inputHandler(notification)
-       this.gameRefreshHandler(notification)
+        this.inputHandler(notification)
+        this.gameRefreshHandler(notification)
     }
 
     gameRefreshHandler(notification){
+        
         if(notification.type != 'gameRefresh') return
+
 
         // save head position
         this.position.x = this.tail[0].x
@@ -86,15 +78,29 @@ class Snake {
         //notify position
         const notificationSnakePosition = snakeNotification()
         notificationSnakePosition.type = 'snakePosition'
-        
         notificationSnakePosition.value = { 
-            x: this.position.x, 
-            y: this.position.y,
-            tail: this.tail,
-            player: this.name,
+                "id": this.networkHandler.socket.id,
+                "name": this.name,
+                "x": this.position.x,
+                "y": this.position.y,
+                "tail": this.tail,
         }
-
+        
         this.notifyAll(notificationSnakePosition)
+        this.networkHandler.socket.emit("movePlayer", {
+            player: { 
+                "id": this.networkHandler.socket.id,
+                "name": this.name,
+                "x": this.position.x,
+                "y": this.position.y,
+                "tail": this.tail
+                }
+            })
+        
+        
+        
+        
+        
     }
 
     inputHandler(notification){

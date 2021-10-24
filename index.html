@@ -10,9 +10,28 @@
     <script type="module" src="static/main.js"></script>
 </head> 
 <body>
-    <canvas data-id="app" width="20px" height="20px"></canvas>
-    <script type="module">
-    </script>
+    
+
+    <div class="c-name-modal">
+        <div class="fields">
+            <input type="text" class="name" placeholder="Digite seu nome">
+            <button type="button" class="play-button">Jogar</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="c-timer-counter">
+            <h1 class="time">
+                5:00
+            </h1>
+        </div>
+        <div class="board-container">
+            <canvas data-id="app" width="20px" height="20px"></canvas>
+            <div class="c-players-info">
+            </div>
+        </div>
+    </div>
+
 
 </body>
 </html>

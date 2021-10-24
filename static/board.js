@@ -1,48 +1,61 @@
+
+
 class Board {
     observers = []
-    players = {}
-    fruits = {}
     velocity = 100
+    state = {
+        players: {},
+        fruits: {},
+    }
 
-    constructor(){
+    constructor(networkHandler){
+        this.networkHandler = networkHandler
+        this.localPlayerId = this.networkHandler.socket.id
+        this.networkHandler.getRemoteState()
         this.field = document.querySelector('[data-id="app"');
         this.ctx = this.field.getContext('2d');
+
+        this.networkHandler.socket.on("updateState", (state) => {
+            delete state.players[this.networkHandler.socket.id]
+            this.state.players = state.players
+            this.state.fruits = state.fruits
+        })
+
+        this.getState()
     }
 
     drawSnake(){
-        for(let playerKey in this.players){
-            for(let i=0; i < this.players[playerKey].tail.length; i++){
-                const snakeNode = this.players[playerKey].tail[i];
-                this.ctx.fillStyle = i == 0 ? 'darkblue ': 'blue';
+        for(let playerKey in this.state.players){
+            for(let i=0; i < this.state.players[playerKey].tail.length; i++){
+                const snakeNode = this.state.players[playerKey].tail[i];
+                if(playerKey == this.networkHandler.socket.id){
+                    this.ctx.fillStyle = i == 0 ? '#212d5d ': '#212D5D88';
+                } else{
+                    this.ctx.fillStyle = i == 0 ? '#4d4d4d55 ': '#66666655';
+                }
+                
                 this.ctx.fillRect(snakeNode.x, snakeNode.y, 1,1)
             }
         }
+        
     }
     
     hasSnakeTheSamePositionWichFruit(){
-        for(let playerKey in this.players){
-            const player = this.players[playerKey];
+        let forControlFlag = true
 
-            for(let fruitKey in this.fruits){
-                const fruit = this.fruits[fruitKey]
+        for(let playerKey in this.state.players){
+            const player = this.state.players[playerKey];
+            for(let fruitKey in this.state.fruits){
+                const fruit = this.state.fruits[fruitKey]
 
                 if(player.tail[0].x == fruit.x && player.tail[0].y == fruit.y){
                     player.tail.unshift({x:fruit.x, y:fruit.y})
+                    forControlFlag = true
+                    break
+                }
 
-                    let notification = boardNotification()
-                    notification.type = "getNewFruit"
-                    this.notifyAll(notification)
-
-                    //notify player score
-                    //TODO: send to server state
-                    notification.type = "playerUpdateScore"
-                    notification.value = {player:playerKey}
-                    this.notifyAll(notification)
-
-                    notification.type = "deleteFruit"
-                    notification.value = fruit
-                    this.notifyAll(notification)
-                    delete this.fruits[fruit.id]
+                if(forControlFlag){
+                    break
                 }
             }
         }
@@ -54,9 +67,8 @@ class Board {
         this.ctx.fillRect(0,0,20,20);
     }
     drawFuit(){
-        for(let fruitKey in this.fruits){
-            const fruit = this.fruits[fruitKey]
-            this.ctx.fillStyle = 'red';
+        for(let fruit of this.state.fruits){
+            this.ctx.fillStyle = 'purple';
             this.ctx.fillRect(fruit.x, fruit.y, 1,1)
         }
     }
@@ -67,23 +79,23 @@ class Board {
         this.notifyAll(notification)
     }
 
-    fruitHandler(notification){
-        if(notification.type == 'fruitGeneration'){
-            //console.log(notification)
-            const fruit = notification.value
-            this.fruits[fruit.id] = fruit
+    snakePositionHandler(notification){
+        if(notification && notification.type == 'snakePosition'){
+            this.state.players[this.networkHandler.socket.id] = notification.value
         }
     }
 
-    snakePositionHandler(notification){
-        if(notification.type == 'snakePosition'){
-            //console.log(notification)
-            const player = notification.value.player
-            const playerX = notification.value.x
-            const playerY = notification.value.y
-            const tail = notification.value.tail
-            this.players[player] = {x: playerX, y:playerY, tail:tail}
-        }
+    getState(){
+        this.networkHandler.socket.emit("getState")
+    }
+
+    drawState(){
+        this.getState()
+        this.gameRefresh()
+        this.drawBoard()
+        this.drawFuit()
+        this.drawSnake()
+        this.hasSnakeTheSamePositionWichFruit()
     }
 
     attach(observer){
@@ -115,7 +127,6 @@ class Board {
 
     update(notification){
         this.snakePositionHandler(notification)
-        this.fruitHandler(notification)
     }
 
 }
