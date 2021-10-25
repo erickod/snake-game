@@ -12,14 +12,6 @@ Inside the directory that contains the requirements.txt and the pyproject.toml f
   ```poetry shell```
   ```poetry install```
 
-- ### If you use Linux or Mac, open a terminal and type the following to set your SECRET_KEY:
-  ```export SECRET_KEY=<YOUR SECRET KEY HERE>```
-- ### If you use Windows, open a promp and type the following to set your SECRET_KEY:
-  ```set SECRET_KEY=<YOUR SECRET KEY HERE>```
-- ### Execute Python Migrations
-  ```python manage.py makemigrations core```
-  ```python manage.py migrate```
-
 - ### Run the server
   ```python server/server.py```
 
