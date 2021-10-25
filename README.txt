@@ -24,6 +24,6 @@ Inside the directory that contains the requirements.txt and the pyproject.toml f
   ```python server/server.py```
 
 - ### Play the game
-  - Open your browser on ```http://<your-ip-addres>:8080```
+  - Open your browser on ```http://[your-ip-addres]:8080```
 
 
