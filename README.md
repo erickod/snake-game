@@ -1,5 +1,8 @@
 # A multiplayer snake like game
-A multiplayer game inspired in traditional snake game.
+A multiplayer game inspired in traditional snake game using:
+- Javascript
+- Socket.io
+- Python
 
 
 ## How to run this project
@@ -17,5 +20,3 @@ Inside the directory that contains the requirements.txt and the pyproject.toml f
 
 - ### Play the game
   - Open your browser on ```http://<your-ip-addres>:8080```
-
-
