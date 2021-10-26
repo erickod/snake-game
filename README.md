@@ -2,19 +2,7 @@
 
 
 
-
-
-
-
-
-https://user-images.githubusercontent.com/26279986/138973408-d6e2744c-2c69-4cb2-9a19-65034501c40e.mov
-
-
-
-
-
-
-
+https://user-images.githubusercontent.com/26279986/138973854-7f6c8bb3-d5fd-40b9-839c-2c005fa35745.mov
 
 
 
