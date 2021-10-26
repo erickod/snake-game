@@ -1,10 +1,24 @@
-
-
-https://user-images.githubusercontent.com/26279986/138972744-1f100f14-7a61-427e-bbc7-6618b362b41b.mp4
-
-
 # A multiplayer snake like game
-A multiplayer game inspired in traditional snake game using:
+
+
+
+
+
+
+
+
+https://user-images.githubusercontent.com/26279986/138973408-d6e2744c-2c69-4cb2-9a19-65034501c40e.mov
+
+
+
+
+
+
+
+
+
+
+A multiplayer game inspired in the traditional snake game, this version is using:
 - Javascript
 - Socket.io
 - Python
