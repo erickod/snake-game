@@ -1,3 +1,8 @@
+
+
+https://user-images.githubusercontent.com/26279986/138972744-1f100f14-7a61-427e-bbc7-6618b362b41b.mp4
+
+
 # A multiplayer snake like game
 A multiplayer game inspired in traditional snake game using:
 - Javascript
@@ -20,3 +25,7 @@ Inside the directory that contains the requirements.txt and the pyproject.toml f
 
 - ### Play the game
   - Open your browser on ```http://<your-ip-addres>:8080```
+
+
+
+
